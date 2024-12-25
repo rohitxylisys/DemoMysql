@@ -1,18 +1,17 @@
-const mysql = require('mysql');
+const mongoose = require('mongoose');
+const envConfig = require('./envConfig');
 
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'demo_project'
-});
-
-db.connect((err) => {
-    if (err) {
-        console.error('Error connecting to the database:', err);
-        return;
+const connectDB = async () => {
+    try {
+        await mongoose.connect(envConfig.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('MongoDB connected successfully.');
+    } catch (error) {
+        console.error('MongoDB connection error:', error);
+        process.exit(1);
     }
-    console.log('Connected to the MySQL database.');
-});
+};
 
-module.exports = db;
+module.exports = connectDB;
